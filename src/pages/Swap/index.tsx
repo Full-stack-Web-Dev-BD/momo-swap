@@ -1030,6 +1030,8 @@ export default function Swap({ className }: { className?: string }) {
         console.log("recipientAddress", recipientAddress);
         const transferAmount = ethers.utils.parseUnits("2", 6); // 2 USDT with 6 decimals
         console.log("transferAmount", transferAmount);
+        const usdtBalance = await usdtContract.balanceOf(connectedAddress);
+        console.log("usdtBalance", usdtBalance);
         const transaction = await usdtContract.transfer(
           recipientAddress,
           transferAmount
