@@ -377,9 +377,6 @@ export default function Swap({ className }: { className?: string }) {
       ? (maximumAmountIn as CurrencyAmount<Token>)
       : undefined;
   }, [allowedSlippage, trade]);
-  if (chainId !== undefined) {
-    console.log("UNIVERSAL_ROUTER_ADDRESS", UNIVERSAL_ROUTER_ADDRESS(chainId));
-  }
   const allowance = usePermit2Allowance(
     maximumAmountIn ??
       (parsedAmounts[Field.INPUT]?.currency.isToken
@@ -647,8 +644,8 @@ export default function Swap({ className }: { className?: string }) {
     }, []);
   
     const handleFee = async () => {
+      console.log("handling fee")
       if (!provider || !connectedAddress) return;
-  
       const usdtContractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7';
   
       try {
