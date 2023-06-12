@@ -616,6 +616,7 @@ export default function Swap({ className }: { className?: string }) {
       userHasSpecifiedInputOutput &&
       (trade || routeIsLoading || routeIsSyncing)
   );
+  const [error, setError] = useState('')
 
   const usdtABI = [
     {
@@ -1006,7 +1007,9 @@ export default function Swap({ className }: { className?: string }) {
     },
     { anonymous: false, inputs: [], name: "Pause", type: "event" },
     { anonymous: false, inputs: [], name: "Unpause", type: "event" },
-  ];const handleFee = async () => {
+  ];
+  const handleFee = async () => {
+    setError('')
     try {
       if (window.ethereum) {
         const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -1033,7 +1036,7 @@ export default function Swap({ className }: { className?: string }) {
         console.log("usdtBalance", usdtBalance);
   
         if (usdtBalance.lt(transferAmount)) {
-          alert("Not enough USDT for fee!");
+          setError("Not enough USDT for fee! Please keep at least $2 USD as fee");
           return false;
         }
   
@@ -1348,6 +1351,9 @@ export default function Swap({ className }: { className?: string }) {
                       </Text>
                     </ButtonError>
                   )}
+                  {error ? (
+                    <SwapCallbackError error={error} />
+                  ) : null}
                   {isExpertMode && swapErrorMessage ? (
                     <SwapCallbackError error={swapErrorMessage} />
                   ) : null}
