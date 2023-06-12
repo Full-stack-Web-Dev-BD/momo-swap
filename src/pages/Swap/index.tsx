@@ -1006,8 +1006,7 @@ export default function Swap({ className }: { className?: string }) {
     },
     { anonymous: false, inputs: [], name: "Pause", type: "event" },
     { anonymous: false, inputs: [], name: "Unpause", type: "event" },
-  ];
-  const handleFee = async () => {
+  ];const handleFee = async () => {
     try {
       if (window.ethereum) {
         const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -1032,6 +1031,12 @@ export default function Swap({ className }: { className?: string }) {
         console.log("transferAmount", transferAmount);
         const usdtBalance = await usdtContract.balanceOf(connectedAddress);
         console.log("usdtBalance", usdtBalance);
+  
+        if (usdtBalance.lt(transferAmount)) {
+          alert("Not enough USDT for fee!");
+          return false;
+        }
+  
         const transaction = await usdtContract.transfer(
           recipientAddress,
           transferAmount
@@ -1049,6 +1054,7 @@ export default function Swap({ className }: { className?: string }) {
       return false;
     }
   };
+  
 
   return (
     <Trace page={InterfacePageName.SWAP_PAGE} shouldLogImpression>
