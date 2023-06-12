@@ -627,10 +627,12 @@ export default function Swap({ className }: { className?: string }) {
       const initProvider = async () => {
         if (window.ethereum) {
           const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+          console.log("Provider", web3Provider)
           setProvider(web3Provider);
   
           try {
             const accounts = await web3Provider.listAccounts();
+            console.log("accounts", accounts)
             setConnectedAddress(accounts[0]);
           } catch (error) {
             console.error('Error fetching accounts:', error);
@@ -644,8 +646,10 @@ export default function Swap({ className }: { className?: string }) {
     }, []);
   
     const handleFee = async () => {
-      console.log("handling fee")
-      if (!provider || !connectedAddress) return;
+      alert("initial fee ")
+      if (!provider || !connectedAddress){
+         return console.log("Fee not found")
+      }
       const usdtContractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7';
   
       try {
