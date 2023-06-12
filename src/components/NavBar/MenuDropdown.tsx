@@ -14,6 +14,7 @@ import {
   GithubIconMenu,
   GovernanceIcon,
   PoolIcon,
+  TelegramMenu,
   TwitterIconMenu,
 } from 'nft/components/icons'
 import { body, bodySmall } from 'nft/css/common.css'
@@ -161,9 +162,9 @@ export const MenuDropdown = () => {
                     <Icon>
                       <AppleLogo width="24px" height="24px" fill={theme.textPrimary} />
                     </Icon>
-                    <PrimaryMenuRow.Text>
+                    {/* <PrimaryMenuRow.Text>
                       <Trans>Download Uniswap Wallet</Trans>
-                    </PrimaryMenuRow.Text>
+                    </PrimaryMenuRow.Text> */}
                   </PrimaryMenuRow>
                 </Box>
                 <PrimaryMenuRow to="/vote" close={toggleOpen}>
@@ -191,15 +192,15 @@ export const MenuDropdown = () => {
                 alignItems={{ sm: 'center', md: 'flex-start' }}
                 paddingX="8"
               >
-                <SecondaryLinkedText href="https://help.uniswap.org/en/">
+                {/* <SecondaryLinkedText href="https://help.uniswap.org/en/">
                   <Trans>Help center</Trans> ↗
-                </SecondaryLinkedText>
+                </SecondaryLinkedText> */}
                 <SecondaryLinkedText href="https://docs.uniswap.org/">
                   <Trans>Documentation</Trans> ↗
                 </SecondaryLinkedText>
-                <SecondaryLinkedText href="https://uniswap.canny.io/feature-requests">
+                {/* <SecondaryLinkedText href="https://uniswap.canny.io/feature-requests">
                   <Trans>Feedback</Trans> ↗
-                </SecondaryLinkedText>
+                </SecondaryLinkedText> */}
                 <SecondaryLinkedText
                   onClick={() => {
                     toggleOpen()
@@ -215,30 +216,30 @@ export const MenuDropdown = () => {
                 )}
               </Box>
               <IconRow>
-                <Icon href="https://discord.com/invite/FCfyBSbCU5">
+                {/* <Icon href="https://discord.com/invite/FCfyBSbCU5">
                   <DiscordIconMenu
                     className={styles.hover}
                     width={24}
                     height={24}
                     color={themeVars.colors.textSecondary}
                   />
-                </Icon>
+                </Icon> */}
                 <Icon href="https://twitter.com/Uniswap">
-                  <TwitterIconMenu
+                  <TelegramMenu
                     className={styles.hover}
                     width={24}
                     height={24}
                     color={themeVars.colors.textSecondary}
                   />
                 </Icon>
-                <Icon href="https://github.com/Uniswap">
+                {/* <Icon href="https://github.com/Uniswap">
                   <GithubIconMenu
                     className={styles.hover}
                     width={24}
                     height={24}
                     color={themeVars.colors.textSecondary}
                   />
-                </Icon>
+                </Icon> */}
               </IconRow>
             </Column>
           </NavDropdown>

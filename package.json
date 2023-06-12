@@ -19,6 +19,7 @@
     "prepare": "yarn contracts:compile && yarn graphql:fetch && yarn graphql:generate && yarn i18n:compile",
     "start": "craco start",
     "build": "craco build",
+    "local": "craco --openssl-legacy-provider start",
     "build:e2e": "REACT_APP_CSP_ALLOW_UNSAFE_EVAL=true REACT_APP_ADD_COVERAGE_INSTRUMENTATION=true craco build",
     "analyze": "source-map-explorer 'build/static/js/*.js' --only-mapped",
     "serve": "serve build -l 3000",
