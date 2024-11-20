@@ -262,8 +262,5 @@
     "@web3-react/walletconnect": "^8.2.0"
   },
   "engines": {
-    "npm": "please-use-yarn",
-    "node": "14",
-    "yarn": ">=1.22"
   }
 }
